@@ -35,7 +35,7 @@ export default function Home({ records }) {
 
 export async function getStaticProps(context) {
   async function retrieveRecords() {
-    const { data } = await axios.get("https://eoinhafbz9xgrwf.m.pipedream.net");
+    const { data } = await axios.get(process.env.NEXT_PUBLIC_PIPEDREAM_API_URL);
 
     return data;
   }
