@@ -1,6 +1,4 @@
-// components/List.js
-
-import Image from "next/image";
+import Image from "next/legacy/image";
 import styles from "../styles/List.module.css";
 
 export const List = ({ data, ...rest }) => {
