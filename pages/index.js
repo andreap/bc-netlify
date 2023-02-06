@@ -1,48 +1,106 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Link from "next/link";
+// pages/index.js
 
-export function Pesce({ id, fields }) {
-  return (
-    <div>
-      {fields?.illustrazione && (
-        <img width="400" height="400" src={fields.illustrazione[0]?.url} />
-      )}
-      <a href={fields.Homepage}>
-        <h2 className="text-lg font-semibold text-slate-500">{fields.Name}</h2>
-      </a>
-    </div>
+import Head from "next/head";
+import { Splash } from "../components/Splash";
+import styles from "../styles/Home.module.css";
+
+export async function getStaticProps() {
+  // asynchronously import neccessary modules so we can avoid any client side compilation
+  const { getPage, getRecordById, getRelatedRecords } = await import(
+    "../lib/airtable"
   );
-}
 
-export default function Home({ records }) {
-  return (
-    <div className="container mx-auto">
-      <h1 className="text-3xl font-bold my-8 leading-tight">
-        Tiny House Communities
-      </h1>
-      <Link href="/new" className="bg-slate-500 text-white px-5 py-4 shadow-md">
-        Add a Community
-      </Link>
-      <div className="grid grid-cols-3 grid-gap-3">
-        {records.map((record, key) => (
-          <Pesce key={key} {...record} />
-        ))}
-      </div>
-    </div>
-  );
-}
+  // query inital data from airtable
+  const [launch] = await getPage("launch");
 
-export async function getStaticProps(context) {
-  async function retrieveRecords() {
-    const { data } = await axios.get(process.env.NEXT_PUBLIC_PIPEDREAM_API_URL);
+  // get related seo metadata
+  if (launch?.fields?.seoId?.length) {
+    const seo = await getRelatedRecords("seo", launch?.fields?.seoId);
 
-    return data;
+    if (seo[0]?.fields?.mediaId.length) {
+      // get related media for seo og:image
+      const ogImage = await getRecordById("media", seo[0]?.fields?.mediaId[0]);
+      seo[0].fields.ogImage = ogImage;
+    }
+    launch.seo = seo;
   }
 
-  const records = await retrieveRecords();
+  // get related data if there is any
+  if (launch?.fields?.sectionId?.length) {
+    const sections = await getRelatedRecords(
+      "sections",
+      launch?.fields?.sectionId
+    );
+
+    // get all blocks for each section and their related media
+    if (sections?.length) {
+      launch.sections = await Promise.all(
+        await sections.map(async (section) => {
+          if (section?.fields?.blockId?.length) {
+            const blocks = await getRelatedRecords(
+              "blocks",
+              section?.fields?.blockId
+            );
+            if (blocks?.length) {
+              section.blocks = await Promise.all(
+                await blocks.map(async (block) => {
+                  if (block?.fields?.mediaId?.length) {
+                    const media = await getRelatedRecords(
+                      "media",
+                      block?.fields?.mediaId
+                    );
+
+                    if (media?.length) {
+                      block.media = media;
+                    }
+                  }
+                  return block;
+                })
+              );
+            }
+          }
+          return section;
+        })
+      );
+    }
+  }
 
   return {
-    props: { records }, // will be passed to the page component as props
+    props: {
+      page: launch?.id ? launch : [],
+    },
   };
+}
+
+export default function Home({ page }) {
+  console.log();
+  return (
+    <div className={styles.pageWrapper}>
+      <Head>
+        <title>{page?.seo[0]?.fields?.title}</title>
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+        <meta name='description' content={page?.seo[0]?.fields?.description} />
+        <meta property='og:title' content={page?.seo[0]?.fields?.title} />
+        <meta
+          property='og:site_name'
+          content={page?.seo[0]?.fields?.sitename}
+        />
+        <meta property='og:url' content={page?.seo[0]?.fields?.url} />
+        <meta
+          property='og:description'
+          content={page?.seo[0]?.fields?.description}
+        />
+        <meta
+          property='og:image'
+          content={page?.seo[0]?.fields?.ogImage?.fields?.url[0]?.url}
+        />
+        <link rel='icon' href='/favicon.ico' />
+        <link rel='cannonical' href={page?.seo[0]?.fields?.url} />
+      </Head>
+
+      <main className={styles.main}>
+        <Splash data={page?.sections} />
+      </main>
+    </div>
+  );
 }
