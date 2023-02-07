@@ -1,6 +1,6 @@
 // components/Containers.js
 
-import styles from "../styles/Containers.module.css";
+import styles from "../styles/Containers.module.scss";
 
 export const Wrapper = ({ children, ...props }) => {
   return (
