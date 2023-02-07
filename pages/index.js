@@ -2,7 +2,7 @@
 
 import Head from "next/head";
 import { Splash } from "../components/Splash";
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Splash.module.css";
 
 export async function getStaticProps() {
   // asynchronously import neccessary modules so we can avoid any client side compilation
@@ -11,7 +11,7 @@ export async function getStaticProps() {
   );
 
   // query inital data from airtable
-  const [launch] = await getPage("launch");
+  const [launch] = await getPage( "launch" );
 
   // get related seo metadata
   if (launch?.fields?.seoId?.length) {
@@ -72,8 +72,7 @@ export async function getStaticProps() {
   };
 }
 
-export default function Home({ page }) {
-  console.log();
+export default function Index({ page }) {
   return (
     <div className={styles.pageWrapper}>
       <Head>

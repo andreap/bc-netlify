@@ -1,7 +1,7 @@
 // pages/about.js
 
 import { Splash } from "../components/Splash";
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Splash.module.css";
 
 export async function getStaticProps() {
   // asynchronously import neccessary modules so we can avoid any client side compilation
@@ -72,7 +72,6 @@ export async function getStaticProps() {
 }
 
 export default function AboutUs({ page }) {
-  console.log();
   return (
     <div className={styles.pageWrapper}>
 
