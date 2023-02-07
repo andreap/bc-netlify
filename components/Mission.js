@@ -5,9 +5,8 @@ import styles from "../styles/Mission.module.css";
 export const Mission = ({ data }) => {
   return (
     <div className={styles.mission}>
-      <div className={styles.missionContent}>
-        <p>{data[0]?.fields?.content}</p>
-      </div>
+      <h1 className={styles.missionTitle}>{data[0]?.fields?.title}</h1>
+      <p className={styles.missionContent}>{data[0]?.fields?.excerpt}</p>
     </div>
   );
 };

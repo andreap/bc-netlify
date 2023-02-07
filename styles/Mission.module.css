@@ -1,13 +1,18 @@
 .mission {
-    width: 100%;
-    min-height: 20vw;
-    margin-bottom: 6em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .missionContent {
-    width: 100%;
-    padding: 2rem;
-  }
+  width: 100%;
+  min-height: 20vw;
+  margin-bottom: 6em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.missionTitle {
+  width: 100%;
+  padding: 2rem;
+}
+
+.missionContent {
+  width: 100%;
+  padding: 2rem;
+}
