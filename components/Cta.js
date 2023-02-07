@@ -1,6 +1,6 @@
 // components/Cta.js
 
-import styles from "../styles/Cta.module.css";
+import styles from "../styles/Cta.module.scss";
 
 export const Cta = ({ data, filter = [] }) => {
   const handleSubmit = (e) => {

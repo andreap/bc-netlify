@@ -16,7 +16,7 @@ const components = {
 
 export const Splash = ({ data }) => {
   if (!Array.isArray(data)) return null;
-  const [logo, ...restComponents] = data;
+  const [logo, hero, ...restComponents] = data;
 
   return (
     <Wrapper>
@@ -29,18 +29,18 @@ export const Splash = ({ data }) => {
           />
         )}
         <Row>
+        {hero && (
+          <Hero
+            key={hero?.id}
+            data={hero.blocks}
+            filter={hero?.fields?.filter}
+          />
+        )}
+        </Row>
+        <Row>
           {restComponents.map((section) => {
             const Component = components[section?.fields?.type];
 
-            if (section?.fields?.type.includes("hero")) {
-              return (
-                <Component
-                  key={`${section?.id}-${section?.order}`}
-                  data={section?.blocks}
-                  filter={section?.fields?.filter}
-                />
-              );
-            }
             if (section?.fields?.type.includes("list")) {
               return (
                 <Component

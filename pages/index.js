@@ -2,7 +2,7 @@
 
 import Head from "next/head";
 import { Splash } from "../components/Splash";
-import styles from "../styles/Splash.module.css";
+import styles from "../styles/Home.module.scss";
 
 export async function getStaticProps() {
   // asynchronously import neccessary modules so we can avoid any client side compilation

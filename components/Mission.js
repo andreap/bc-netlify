@@ -1,6 +1,6 @@
 // components/Mission.js
 
-import styles from "../styles/Mission.module.css";
+import styles from "../styles/Mission.module.scss";
 
 export const Mission = ({ data }) => {
   return (

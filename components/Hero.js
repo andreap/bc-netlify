@@ -1,6 +1,6 @@
 // components/Hero.js
 
-import styles from "../styles/Hero.module.css";
+import styles from "../styles/Hero.module.scss";
 import Image from "next/legacy/image";
 
 export const Hero = ({ data }) => {

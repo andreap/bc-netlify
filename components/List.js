@@ -1,5 +1,5 @@
 import Image from "next/legacy/image";
-import styles from "../styles/List.module.css";
+import styles from "../styles/List.module.scss";
 
 export const List = ({ data, ...rest }) => {
   return (

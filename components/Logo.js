@@ -1,6 +1,6 @@
 // components/Logo.js
 
-import styles from "../styles/Logo.module.css";
+import styles from "../styles/Logo.module.scss";
 import Image from "next/legacy/image";
 
 export const Logo = ({ data }) => {
