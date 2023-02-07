@@ -31,3 +31,7 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# Local Visual Studio Conf
+.vscode
+.vscode/*
